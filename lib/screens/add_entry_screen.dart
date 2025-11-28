@@ -23,7 +23,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7FAFC),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Новая запись',
           style: TextStyle(
             fontSize: 20,
@@ -34,18 +34,9 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_rounded, color: Color(0xFF667EEA)),
+          icon: const Icon(Icons.arrow_back_ios_rounded, color: Color(0xFF667EEA)),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.history_rounded, color: Color(0xFF667EEA)),
-            onPressed: () {
-              Navigator.pop(context);
-              // Здесь будет переход на историю (можно реализовать через callback)
-            },
-          ),
-        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -65,7 +56,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               const SizedBox(height: 32),
 
               // Поле для комментария
-              Text(
+              const Text(
                 'Комментарий',
                 style: TextStyle(
                   fontSize: 20,
@@ -74,7 +65,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
+              const Text(
                 'Необязательно',
                 style: TextStyle(
                   fontSize: 14,
@@ -83,10 +74,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               ),
               const SizedBox(height: 16),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  boxShadow: [
                     BoxShadow(
                       color: Color(0x0D000000),
                       blurRadius: 10,
@@ -97,7 +88,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                 child: TextField(
                   controller: _noteController,
                   maxLines: 5,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Опишите, что повлияло на ваше настроение...',
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(16),
@@ -111,12 +102,12 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               Container(
                 width: double.infinity,
                 height: 56,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
                     colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
                   ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: const [
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                  boxShadow: [
                     BoxShadow(
                       color: Color(0x33667EEA),
                       blurRadius: 15,
@@ -128,8 +119,8 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: _saveEntry,
-                    borderRadius: BorderRadius.circular(16),
-                    child: Center(
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    child: const Center(
                       child: Text(
                         'Сохранить запись',
                         style: TextStyle(

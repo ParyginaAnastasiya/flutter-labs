@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'models/mood_entry.dart';
 import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/stats_screen.dart';
 import 'screens/add_entry_screen.dart';
-import 'models/mood_entry.dart';
+import 'repositories/mood_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,22 +35,25 @@ class MainNavigator extends StatefulWidget {
 
 class _MainNavigatorState extends State<MainNavigator> {
   int _currentIndex = 0;
+  final MoodRepository _moodRepository = MoodRepository();
   final List<MoodEntry> _moodEntries = [];
-
-  // Список экранов для навигации
-  final List<Widget> _screens = [];
 
   @override
   void initState() {
     super.initState();
-    _screens.addAll([
-      HomeScreen(
-        onAddEntry: _navigateToAddEntry,
-        moodEntries: _moodEntries,
-      ),
-      HistoryScreen(moodEntries: _moodEntries),
-      StatsScreen(moodEntries: _moodEntries),
-    ]);
+    _loadEntries();
+  }
+
+  Future<void> _loadEntries() async {
+    try {
+      final entries = await _moodRepository.getAllEntries();
+      setState(() {
+        _moodEntries.clear();
+        _moodEntries.addAll(entries);
+      });
+    } catch (e) {
+      debugPrint('Ошибка при загрузке записей: $e');
+    }
   }
 
   void _navigateToAddEntry() {
@@ -63,11 +67,24 @@ class _MainNavigatorState extends State<MainNavigator> {
     );
   }
 
-  void _addMoodEntry(MoodEntry entry) {
-    setState(() {
-      _moodEntries.insert(0, entry); // Добавляем в начало списка
-    });
-    Navigator.pop(context); // Возвращаемся на предыдущий экран
+  Future<void> _addMoodEntry(MoodEntry entry) async {
+    try {
+      await _moodRepository.addMoodEntry(entry);
+      await _loadEntries();
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      debugPrint('Ошибка при добавлении записи: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Ошибка при сохранении записи'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _onTabTapped(int index) {
@@ -79,7 +96,18 @@ class _MainNavigatorState extends State<MainNavigator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          HomeScreen(
+            onAddEntry: _navigateToAddEntry,
+            moodEntries: _moodEntries,
+            moodRepository: _moodRepository,
+          ),
+          HistoryScreen(moodEntries: _moodEntries),
+          StatsScreen(moodEntries: _moodEntries),
+        ],
+      ),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }

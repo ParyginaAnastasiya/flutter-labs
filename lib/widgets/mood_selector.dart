@@ -12,7 +12,7 @@ class MoodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> moods = [
+    const List<Map<String, dynamic>> moods = [
       {'emoji': '😍', 'label': 'Супер', 'value': 'excellent', 'color': Color(0xFF4CAF50)},
       {'emoji': '😊', 'label': 'Хорошо', 'value': 'good', 'color': Color(0xFF8BC34A)},
       {'emoji': '😐', 'label': 'Нейтрально', 'value': 'neutral', 'color': Color(0xFFFFC107)},
@@ -23,7 +23,7 @@ class MoodSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Как вы себя чувствуете?',
           style: TextStyle(
             fontSize: 20,
@@ -50,7 +50,7 @@ class MoodSelector extends StatelessWidget {
                   color: isSelected ? moodColor : Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isSelected ? moodColor : Color(0xFFE2E8F0),
+                    color: isSelected ? moodColor : const Color(0xFFE2E8F0),
                     width: 2,
                   ),
                   boxShadow: const [
@@ -74,7 +74,7 @@ class MoodSelector extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : Color(0xFF2D3748),
+                        color: isSelected ? Colors.white : const Color(0xFF2D3748),
                       ),
                     ),
                   ],

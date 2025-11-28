@@ -27,6 +27,17 @@ class MoodEntry {
     );
   }
 
+  // Преобразование в Map для SQLite
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'date': date.millisecondsSinceEpoch,
+      'mood': mood,
+      'note': note,
+      'rating': rating,
+    };
+  }
+
   // Получить эмодзи для настроения
   String get emoji {
     switch (mood) {

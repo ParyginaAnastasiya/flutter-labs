@@ -14,7 +14,7 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF7FAFC),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'История настроений',
           style: TextStyle(
             fontSize: 20,
@@ -30,7 +30,7 @@ class HistoryScreen extends StatelessWidget {
   }
 
   Widget _buildEmptyState() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -39,7 +39,7 @@ class HistoryScreen extends StatelessWidget {
             size: 64,
             color: Color(0xFFA0AEC0),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'Пока нет записей',
             style: TextStyle(
@@ -48,7 +48,7 @@ class HistoryScreen extends StatelessWidget {
               color: Color(0xFF2D3748),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             'Добавьте первую запись о настроении',
             style: TextStyle(
@@ -75,10 +75,10 @@ class HistoryScreen extends StatelessWidget {
 
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: const [
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            boxShadow: [
               BoxShadow(
                 color: Color(0x0D000000),
                 blurRadius: 10,
@@ -93,7 +93,7 @@ class HistoryScreen extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 color: color.withAlpha(25),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
                 border: Border.all(color: color.withAlpha(50)),
               ),
               child: Center(
@@ -105,7 +105,7 @@ class HistoryScreen extends StatelessWidget {
             ),
             title: Text(
               moodText,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF2D3748),
@@ -117,7 +117,7 @@ class HistoryScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   date,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Color(0xFF718096),
                   ),
@@ -126,7 +126,7 @@ class HistoryScreen extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     note,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF4A5568),
                     ),
@@ -151,7 +151,7 @@ class HistoryScreen extends StatelessWidget {
     } else if (entryDate == yesterday) {
       return 'Вчера';
     } else {
-      final months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+      const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
       return '${date.day} ${months[date.month - 1]} ${date.year}';
     }
   }
