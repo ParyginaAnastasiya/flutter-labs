@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 import '../widgets/mood_selector.dart';
+import '../models/mood_entry.dart';
 
-class AddEntryScreen extends StatelessWidget {
-  const AddEntryScreen({super.key});
+class AddEntryScreen extends StatefulWidget {
+  final Function(MoodEntry) onSaveEntry;
+
+  const AddEntryScreen({
+    super.key,
+    required this.onSaveEntry,
+  });
+
+  @override
+  State<AddEntryScreen> createState() => _AddEntryScreenState();
+}
+
+class _AddEntryScreenState extends State<AddEntryScreen> {
+  String _selectedMood = 'neutral';
+  final TextEditingController _noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +35,15 @@ class AddEntryScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_rounded, color: Color(0xFF667EEA)),
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.history_rounded, color: Color(0xFF667EEA)),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+              // Здесь будет переход на историю (можно реализовать через callback)
+            },
           ),
         ],
       ),
@@ -38,8 +55,12 @@ class AddEntryScreen extends StatelessWidget {
             children: [
               // Выбор настроения
               MoodSelector(
-                selectedMood: 'neutral',
-                onMoodSelected: (mood) {},
+                selectedMood: _selectedMood,
+                onMoodSelected: (mood) {
+                  setState(() {
+                    _selectedMood = mood;
+                  });
+                },
               ),
               const SizedBox(height: 32),
 
@@ -74,6 +95,7 @@ class AddEntryScreen extends StatelessWidget {
                   ],
                 ),
                 child: TextField(
+                  controller: _noteController,
                   maxLines: 5,
                   decoration: InputDecoration(
                     hintText: 'Опишите, что повлияло на ваше настроение...',
@@ -105,7 +127,7 @@ class AddEntryScreen extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: _saveEntry,
                     borderRadius: BorderRadius.circular(16),
                     child: Center(
                       child: Text(
@@ -125,5 +147,34 @@ class AddEntryScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _saveEntry() {
+    if (_selectedMood.isEmpty) return;
+
+    final entry = MoodEntry.fromValues(
+      mood: _selectedMood,
+      note: _noteController.text.isNotEmpty ? _noteController.text : null,
+      rating: _getRatingFromMood(_selectedMood),
+    );
+
+    widget.onSaveEntry(entry);
+  }
+
+  int _getRatingFromMood(String mood) {
+    switch (mood) {
+      case 'excellent': return 5;
+      case 'good': return 4;
+      case 'neutral': return 3;
+      case 'bad': return 2;
+      case 'terrible': return 1;
+      default: return 3;
+    }
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
   }
 }

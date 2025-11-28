@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_bottom_nav_bar.dart';
+import '../models/mood_entry.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final VoidCallback onAddEntry;
+  final List<MoodEntry> moodEntries;
+
+  const HomeScreen({
+    super.key,
+    required this.onAddEntry,
+    required this.moodEntries,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final todayEntry = _getTodayEntry();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7FAFC),
       body: SafeArea(
@@ -73,12 +82,12 @@ class HomeScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '😐',
+                            todayEntry?.emoji ?? '😐',
                             style: TextStyle(fontSize: 28),
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Нейтрально',
+                            todayEntry?.moodText ?? 'Не указано',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -113,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: onAddEntry,
                     borderRadius: BorderRadius.circular(16),
                     child: Center(
                       child: Row(
@@ -194,8 +203,19 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
     );
+  }
+
+  MoodEntry? _getTodayEntry() {
+    final now = DateTime.now();
+    for (final entry in moodEntries) {
+      if (entry.date.year == now.year &&
+          entry.date.month == now.month &&
+          entry.date.day == now.day) {
+        return entry;
+      }
+    }
+    return null;
   }
 
   String _getFormattedDate() {
